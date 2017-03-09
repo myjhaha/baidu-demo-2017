@@ -1,0 +1,29 @@
+*{box-sizing: border-box;}
+/***** 选中的颜色 列表 *****/
+#selected-color-list {
+	min-width: 160px;
+	min-height: 300px;
+}
+
+.selected-color-list .color-block{
+	width: 40px;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+	display: inline-block;
+	vertical-align: top;
+}
+.selected-color-list .txt-block{
+	width: 70px;
+	height: 20px;
+	text-align: left;
+	line-height: 20px;
+	display: inline-block;
+	vertical-align:top;
+	padding-left: 5px;
+	font-size: 12px;
+}
+.selected-color-list .list-item{
+	display: block;
+	overflow: hidden;
+}
