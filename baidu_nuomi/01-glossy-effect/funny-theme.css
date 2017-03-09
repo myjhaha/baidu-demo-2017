@@ -1,0 +1,173 @@
+img{
+	vertical-align:bottom; /* 为了消去图片底下的空白间隔 */
+}
+.container {
+	width:600px;
+	margin:auto;
+	box-shadow: 0 0 10px #333333;
+	position: relative;	
+}
+.container *{
+	box-sizing: border-box;
+}
+.funny-theme{
+	width: 100%;
+	height: 100%;
+	position: relative;	
+	border: 1px;
+	display: block;
+}
+
+.funny-theme > img{
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	position: relative;
+}
+
+.funny-theme .main-div{
+	width: 100%;
+	height: 100%;
+	padding: 1.5em;
+	z-index: 1;
+	position: absolute;
+}
+.funny-theme .title{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	display: -webkit-flex; 		/* safari */
+	flex-direction: column;		/* 主轴方向 */
+	justify-content: center;	/* 主轴元素的对齐方式*/
+	align-items: center;		/* 的交叉轴上对齐方式*/
+	position: relative;
+}
+
+.funny-theme h1 {
+}
+.funny-theme a {
+	text-shadow: 0 0 2px white;
+}
+
+/** 模拟的边框 + 动画 **/
+/* 模拟的左右边框 */
+.funny-theme .special-border:after{		
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 0%;			/* 动画会改变height */
+	border: solid yellow;
+	border-width: 0 3px ;
+	display:block;
+	box-sizing: border-box;
+  	z-index: 1;
+  	/* 如果不加这行，鼠标离开时，会马上回到原来状态，加上后就有回去的动画效果 */
+  	transition: 0.3s height;
+}
+.funny-theme:hover .special-border:after{
+	transition: 0.3s height;
+	height:100%;
+}
+/* 模拟的上下边框 */
+.funny-theme .special-border:before{		
+	content: '';
+	position: absolute;
+	width: 0%;				/* 动画会改变width */
+	height: 100%;
+	border: solid yellow;
+	border-width: 3px 0 ;
+	display:block;
+	box-sizing: border-box;
+  	z-index: 1;
+  	/* 如果不加这行，鼠标离开时，会马上回到原来状态，加上后就有回去的动画效果 */
+  	transition: 0.6s width;
+}
+.funny-theme:hover .special-border:before{
+	transition: 0.6s width;
+	width:100%;
+}
+
+/** 背景图片模糊化的动画 **/
+.funny-theme > img{
+	filter:blur(0px);
+	transition: 1s filter;
+}
+.funny-theme:hover > img {
+	/*animation: 0.2s img-blur-ani linear forwards;*/
+	-webkit-filter:blur(2px);
+	filter:blur(2px);
+	transition: 1s filter;
+}
+
+/** 流光效果 **/
+.streaming{
+	background-image: -webkit-linear-gradient(left,
+		#ff0000 0%,#80ff00 12.5%,#00ffff 25%,#8000ff 37.5%,
+		#ff0000 50%,#80ff00 62.5%,#00ffff 75%,#8000ff 87.5%,#ff0000 100%);
+	-webkit-text-fill-color:transparent;
+	-webkit-background-clip:text;
+	background-size:200% 100%;
+	animation: streaming-ani 2s infinite linear;
+
+}
+@keyframes streaming-ani {
+	0%  {background-position:0 0;}
+	100%{background-position:-100% 0;}
+}
+/** 呼吸效果 **/
+.breath {
+	animation:breath-ani 2.5s infinite ease-in-out;
+}
+@keyframes breath-ani{
+	/*from { color:blue;}*/ 
+    50%  { color:orange;} 
+    /*to   { color:blue;}*/
+}
+
+/** 滑进滑出动画 **/
+.slide-in {
+	opacity: 0;
+	transform: translate(0, 10px);
+	transition: 0.5s opacity, 0.5s transform;
+}
+.funny-theme:hover .slide-in{
+	opacity: 1;
+	transform: translate(0, 0);
+	transition: 0.5s opacity, 0.5s transform ;
+}
+
+
+/* 左右边框的动画 */
+/*.funny-theme:hover .special-border:after{	
+	animation: 0.2s border-ani-l-r linear forwards;
+}*/
+/* 左右边框的动画 */
+/*.funny-theme:hover .special-border:before{	
+	animation: 0.2s border-ani-u-d linear forwards;
+}*/
+/*@keyframes border-ani-u-d{
+	0% 	 {width: 0%;}
+	100% {width: 100%;}
+}
+@keyframes border-ani-l-r{
+	0% 	 {height:0%;}
+	100% {height:100%;}
+}*/
+
+/**
+ * 如果用动画的方式，当鼠标离开时，会马上恢复原来的状态，效果不好
+ */
+
+/*
+.funny-theme:hover > img {
+	animation: 0.2s img-blur-ani linear forwards;
+}
+@keyframes img-blur-ani{
+	0% { 
+			-webkit-filter:blur(0px);
+			filter:blur(0px); 
+		}
+	100% {-webkit-filter:blur(3px);
+			filter:blur(3px);}
+}
+*/

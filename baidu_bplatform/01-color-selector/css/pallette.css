@@ -1,0 +1,164 @@
+/** 公共 **/
+.clearfix:before,
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+
+/** 色彩插件 **/
+.color-selector-content{
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 5px;
+}
+.color-selector-content *{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+.color-selector-content p{
+	margin-top: 1px;
+}
+.color-selector-content input[type=number],
+.color-selector-content input[type=text]
+{
+	width: 64px;
+	height: 28px;
+	line-height: 28px;
+	border-radius: 5px;
+	margin: 1px 4px;
+	outline: none;
+	vertical-align:middle;
+}
+
+.color-selector-content input[type=range] {
+    width: 256px;
+    height: 28px;
+    border-radius: 10px; 
+    margin: 1px;
+    outline: none; 
+    vertical-align:middle;
+}
+
+.color-selector-content > *{
+	padding: 0.5em;
+}
+.color-selector-content >*:nth-child(1){
+	margin-left: 0;
+}
+
+.color-selector-content span{
+	width: 30px;
+	text-align: center;
+	display: inline-block;
+}
+.color-selector-content fieldset{
+	border-radius: 8px;
+	padding: 5px 8px; 
+	font-size: 14px;
+}
+.color-selector-content legend{
+	font-size: 14px;
+	padding:0 5px;
+
+}
+
+/** 3.0 **/
+
+/* cover */
+.color-selector-content .cover-div{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+}
+/* target */
+.color-selector-content .target-div{
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	border: 2px solid white;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #222222;
+	left: 40px;
+	top: 40px;
+	z-index: 0;
+}
+
+/* hsv */
+.color-selector-content .hsv-div{
+	width: 300px;
+	height: 300px;
+	font-size:0 ;
+	position: relative;
+	box-shadow: 0 0 5px #222222;
+}
+.color-selector-content .hsv-div > img{
+	width: 100%;
+	height: 100%;
+	vertical-align:bottom;
+	display:block;
+	position: absolute;
+} 
+
+.color-selector-content .hue-o-div{
+	width:300px;
+	height:300px;
+	position: relative;
+	font-size: 0;
+	box-shadow: 0 0 5px #222222;
+}
+.color-selector-content .hue-o-div > img{
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	display:block;
+	position: absolute;
+}
+.color-selector-content .hue-v-div{
+	width:24px;
+	height:256px;
+	position: relative;
+	font-size: 0;
+
+}
+.color-selector-content .hue-v-div > img{
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	display:block;
+	position: absolute;
+}
+
+.color-selector-content .ctrl-div{
+	flex-direction: column;
+	justify-content: center;
+}
+
+.color-selector-content .interface-div{
+	flex-direction: column;
+	justify-content: center;
+}
+.color-selector-content .interface-div span{
+	width: 48px;
+	vertical-align:middle;
+}
+.color-selector-content .interface-div input[type=text].interface-txt{
+	width: 150px;
+	vertical-align:middle;
+}
+.color-selector-content .interface-div .interface-color{
+	vertical-align:middle;
+	width: 100px;
+	height: 62px;
+	box-shadow: 0 0 5px #222222;
+	border: 2px solid white;
+	display: inline-block;
+	margin: 1px 4px;
+}
