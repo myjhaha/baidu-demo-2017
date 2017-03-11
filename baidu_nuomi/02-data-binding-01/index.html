@@ -11,36 +11,28 @@
  * Test 
  */	
 
-let data = {
-	user: {
-        name: "liangshaofeng",
-        age: "24"
-    },
-    address: {
-        city: "beijing",
-        street: "beijing road No.4"
-    }
-}
+let app1 = new Observer({
+  name: 'youngwind',
+  age: 25
+});
 
-let app = new Observer(data);
+let app2 = new Observer({
+  university: 'bupt',
+  major: 'computer'
+});
 
-let user = data.user;
-let addr = data.address;
+// 要实现的结果如下：
+app1.data.name 			// 你访问了 name
+app1.data.age = 100;  	// 你设置了 age，新的值为100
+app2.data.university 	// 你访问了 university
+app2.data.major = 'science'  // 你设置了 major，新的值为 science
 
-data.address = {"city":"广州", "street":"越秀南路11号"};
+app2.data.university = {name:"SYSU", address:"广州市海珠区新港西路135号"}
+// 你设置了 university，新的值为 {object}
 
-let street = data.address.street;
-
-/* console里应该是 */
-/*
-you access key[user]
-you access key[address]
-you set key[address]=[object]
-you access key[address]
-you access key[street]
-*/
-
-
+app2.data.university.name
+// 你访问了 university
+// 你访问了 name
 
 
 
@@ -50,12 +42,7 @@ you access key[street]
 	</script>
 </head>
 <body>
-<p>console里应该是:</p>
-you access key[user]<br>
-you access key[address]<br>
-you set key[address]=[object]<br>
-you access key[address]<br>
-you access key[street]<br>
+
 
 </body>
 </html>

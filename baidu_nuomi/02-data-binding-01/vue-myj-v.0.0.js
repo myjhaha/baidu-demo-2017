@@ -25,11 +25,11 @@ p.convert = function (key, val){
 		configurable:true,
 		enumerable: true,
 		get :function() {
-			console.log("you access key["+key+"]");
+			console.log("你访问了属性 " + key);
 			return val;
 		},
 		set :function (newVal) {
-			console.log("you set key["+key+"]="+newVal);
+			console.log("你设置了 "+key+", 新的值为 "+newVal);
 			if (newVal === val) return;
 			if (typeof newVal === 'object') {
 				new Observer(newVal);
