@@ -320,7 +320,7 @@ CtrlComponent.prototype.init = function(div){
 	//this.ctrl_div = document.createElement("div");
 
 	/** input - rgb hsv - number and range **/
-	this.h_value_number = createElement("input",  { "type": "text",
+	this.h_value_number = createElement("input",  { "type": "number",
   													"min": "0",		"max": "360",
   													"step": "1",	"value": this.currentH } );
   	this.s_value_number = createElement("input",  { "type": "number",
@@ -344,19 +344,19 @@ CtrlComponent.prototype.init = function(div){
   													"step": "1",	"value": this.currentR } );
   	this.g_value_number = createElement("input",  { "type": "number",
   													"min": "0",		"max": "255",
-  													"step": "0.01",	"value": this.currentG } );
+  													"step": "1",	"value": this.currentG } );
   	this.b_value_number = createElement("input",  { "type": "number",
   													"min": "0",		"max": "255",
-  													"step": "0.01", "value": this.currentB } );
+  													"step": "1", "value": this.currentB } );
   	this.r_value_slider = createElement("input",  { "type": "range",
   													"min": "0",		"max": "255",
   													"step": "1", 	"value": this.currentR } );
   	this.g_value_slider =  createElement("input",  { "type": "range",
   													"min": "0", 	"max": "255",
-  													"step": "0.01", "value": this.currentG } );
+  													"step": "1", "value": this.currentG } );
   	this.b_value_slider = createElement("input",  { "type": "range",
   													"min": "0", 	"max": "255",
-  													"step": "0.01", "value": this.currentB } );
+  													"step": "1", "value": this.currentB } );
 
   	var p_h = document.createElement("p")
   	var span_h = document.createElement("span");
@@ -417,12 +417,12 @@ CtrlComponent.prototype.init = function(div){
   	this.container.appendChild(fs);
 
   	// 因为取值是以number里的为准的，所以要绑定一下
-  	bindNumberAndRange(this.h_value_number, this.h_value_slider);
-  	bindNumberAndRange(this.v_value_number, this.v_value_slider);
-  	bindNumberAndRange(this.s_value_number, this.s_value_slider);
-  	bindNumberAndRange(this.r_value_number, this.r_value_slider);
-  	bindNumberAndRange(this.g_value_number, this.g_value_slider);
-  	bindNumberAndRange(this.b_value_number, this.b_value_slider);
+  	// bindNumberAndRange(this.h_value_number, this.h_value_slider);
+  	// bindNumberAndRange(this.v_value_number, this.v_value_slider);
+  	// bindNumberAndRange(this.s_value_number, this.s_value_slider);
+  	// bindNumberAndRange(this.r_value_number, this.r_value_slider);
+  	// bindNumberAndRange(this.g_value_number, this.g_value_slider);
+  	// bindNumberAndRange(this.b_value_number, this.b_value_slider);
 
   	var ownerPallette = this.owner;
   	var h_value_number = this.h_value_number;
@@ -438,7 +438,21 @@ CtrlComponent.prototype.init = function(div){
   	var r_value_slider = this.r_value_slider;
   	var g_value_slider = this.g_value_slider;
   	var b_value_slider = this.b_value_slider;
-  	function onHSVChange(ev){
+  	function onHSVRangeChange(ev){
+		var h = h_value_slider.value;
+		var s = s_value_slider.value;
+		var v = v_value_slider.value;
+		// var rgb = hsv2rgb(h,s,v);
+		// r_value_number.value = r_value_slider.value = rgb[0];
+		// g_value_number.value = g_value_slider.value = rgb[1];
+		// b_value_number.value = b_value_slider.value = rgb[2];
+		if (isNaN(h)){
+			ownerPallette.setColorByHSV(h,parseFloat(s),parseFloat(v));
+		}else {
+			ownerPallette.setColorByHSV(parseFloat(h),parseFloat(s),parseFloat(v));
+		}
+  	}
+  	function onHSVNumberChange(ev){
 		var h = h_value_number.value;
 		var s = s_value_number.value;
 		var v = v_value_number.value;
@@ -452,7 +466,14 @@ CtrlComponent.prototype.init = function(div){
 			ownerPallette.setColorByHSV(parseFloat(h),parseFloat(s),parseFloat(v));
 		}
   	}
-  	function onRGBChange(ev){
+  	function onRGBRangeChange(ev){
+  		var r = r_value_slider.value;
+		var g = g_value_slider.value;
+		var b = b_value_slider.value;
+
+		ownerPallette.setColorByRGB(r,g,b);
+  	}
+  	function onRGBNumberChange(ev){
   		var r = r_value_number.value;
 		var g = g_value_number.value;
 		var b = b_value_number.value;
@@ -460,43 +481,43 @@ CtrlComponent.prototype.init = function(div){
 		// h_value_number.value = h_value_slider.value = hsv[0];
 		// s_value_number.value = s_value_slider.value = hsv[1];
 		// v_value_number.value = v_value_slider.value = hsv[2];
-
+		console.log("onRGBNumberChange(" + r +"," + g + "," + b +")");
 		ownerPallette.setColorByRGB(r,g,b);
   	}
 
-  	addEventHandler2(this.h_value_number, "change", onHSVChange);
-  	addEventHandler2(this.s_value_number, "change", onHSVChange);
-  	addEventHandler2(this.v_value_number, "change", onHSVChange);
-  	addEventHandler2(this.h_value_slider, "change", onHSVChange);
-  	addEventHandler2(this.s_value_slider, "change", onHSVChange);
-  	addEventHandler2(this.v_value_slider, "change", onHSVChange);
-  	addEventHandler2(this.h_value_number, "input", onHSVChange);
-  	addEventHandler2(this.s_value_number, "input", onHSVChange);
-  	addEventHandler2(this.v_value_number, "input", onHSVChange);
-  	addEventHandler2(this.h_value_slider, "input", onHSVChange);
-  	addEventHandler2(this.s_value_slider, "input", onHSVChange);
-  	addEventHandler2(this.v_value_slider, "input", onHSVChange);
+  	addEventHandler2(this.h_value_number, "change", onHSVNumberChange);
+  	addEventHandler2(this.s_value_number, "change", onHSVNumberChange);
+  	addEventHandler2(this.v_value_number, "change", onHSVNumberChange);
+  	addEventHandler2(this.h_value_slider, "change", onHSVRangeChange);
+  	addEventHandler2(this.s_value_slider, "change", onHSVRangeChange);
+  	addEventHandler2(this.v_value_slider, "change", onHSVRangeChange);
+  	addEventHandler2(this.h_value_number, "input", onHSVNumberChange);
+  	addEventHandler2(this.s_value_number, "input", onHSVNumberChange);
+  	addEventHandler2(this.v_value_number, "input", onHSVNumberChange);
+  	addEventHandler2(this.h_value_slider, "input", onHSVRangeChange);
+  	addEventHandler2(this.s_value_slider, "input", onHSVRangeChange);
+  	addEventHandler2(this.v_value_slider, "input", onHSVRangeChange);
 
-  	addEventHandler2(this.r_value_number, "change", onRGBChange);
-  	addEventHandler2(this.g_value_number, "change", onRGBChange);
-  	addEventHandler2(this.b_value_number, "change", onRGBChange);
-  	addEventHandler2(this.r_value_slider, "change", onRGBChange);
-  	addEventHandler2(this.g_value_slider, "change", onRGBChange);
-  	addEventHandler2(this.b_value_slider, "change", onRGBChange);
-  	addEventHandler2(this.r_value_number, "input", onRGBChange);
-  	addEventHandler2(this.g_value_number, "input", onRGBChange);
-  	addEventHandler2(this.b_value_number, "input", onRGBChange);
-  	addEventHandler2(this.r_value_slider, "input", onRGBChange);
-  	addEventHandler2(this.g_value_slider, "input", onRGBChange);
-  	addEventHandler2(this.b_value_slider, "input", onRGBChange);
+  	addEventHandler2(this.r_value_number, "change", onRGBNumberChange);
+  	addEventHandler2(this.g_value_number, "change", onRGBNumberChange);
+  	addEventHandler2(this.b_value_number, "change", onRGBNumberChange);
+  	addEventHandler2(this.r_value_slider, "change", onRGBRangeChange);
+  	addEventHandler2(this.g_value_slider, "change", onRGBRangeChange);
+  	addEventHandler2(this.b_value_slider, "change", onRGBRangeChange);
+  	addEventHandler2(this.r_value_number, "input", onRGBNumberChange);
+  	addEventHandler2(this.g_value_number, "input", onRGBNumberChange);
+  	addEventHandler2(this.b_value_number, "input", onRGBNumberChange);
+  	addEventHandler2(this.r_value_slider, "input", onRGBRangeChange);
+  	addEventHandler2(this.g_value_slider, "input", onRGBRangeChange);
+  	addEventHandler2(this.b_value_slider, "input", onRGBRangeChange);
 }
 
 CtrlComponent.prototype.showColorByHSV = function (h,s,v){
 	if (s == 0){
-		h = NaN;
-		this.h_value_number.value = this.h_value_slider.value = h;
+		//h = NaN;
+		//this.h_value_number.value = this.h_value_slider.value = null;
 	}else if ( isNaN(h)){
-		this.h_value_number.value = this.h_value_slider.value = h;
+		//this.h_value_number.value = this.h_value_slider.value = null;
 	}else{
 		this.h_value_number.value = this.h_value_slider.value = parseFloat(h).toFixed(2);
 	}
