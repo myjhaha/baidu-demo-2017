@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue 源码学习</title>
+
+	<script src="./vue-myj-v.0.0.js"></script>
+	<script>
+
+/**
+ * Test 
+ */	
+
+let data = {
+	user: {
+        name: "liangshaofeng",
+        age: "24"
+    },
+    address: {
+        city: "beijing",
+        street: "beijing road No.4"
+    }
+}
+
+let app = new Observer(data);
+
+let user = data.user;
+let addr = data.address;
+
+data.address = {"city":"广州", "street":"越秀南路11号"};
+
+let street = data.address.street;
+
+/* console里应该是 */
+/*
+you access key[user]
+you access key[address]
+you set key[address]=[object]
+you access key[address]
+you access key[street]
+*/
+
+
+
+
+
+
+
+
+	</script>
+</head>
+<body>
+<p>console里应该是:</p>
+you access key[user]<br>
+you access key[address]<br>
+you set key[address]=[object]<br>
+you access key[address]<br>
+you access key[street]<br>
+
+</body>
+</html>
