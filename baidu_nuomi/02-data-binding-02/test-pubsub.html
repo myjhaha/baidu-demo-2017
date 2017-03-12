@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue 源码学习 （二）</title>
+	<script src="./js/vue-myj-v.0.2.js"></script>
+</head>
+<body>
+<h2>Test Pub/Sub</h2>
+<div id="test-custom-event" style="width:100px;height:62px;background-color:green;"></div>
+<hr>
+
+<script>
+
+//---- test 订阅者发布者模式 ----//
+var pubsub = new PubSub();
+pubsub.on("someEvent", function(data){
+	console.log("[1]"+data);
+});
+pubsub.on("someEvent", function(data){
+	console.log("[2]"+data);
+});
+pubsub.on("someEvent", function(data){
+	console.log("[3]"+data);
+});
+pubsub.emit("someEvent", "传入的参数");
+
+//---- test 自定义事件 ----//
+var testDiv = document.getElementById("test-custom-event");
+var evt = document.createEvent("Event"); 	// 创建事件
+evt.initEvent("customEvent", true, true); 	// 定义事件类型  
+											// [是否冒泡] 
+											// [是否可以使用preventDefault()来阻止默认行为]
+evt.name = "hahaha"
+
+// 监听事件
+testDiv.addEventListener('customEvent',function(ev){
+     console.log("[1] on customEvent handle event=" + ev);
+}, false);
+testDiv.addEventListener('customEvent',function(ev){
+     console.log("[2] on customEvent handle event=" + ev);
+}, false);
+
+testDiv.addEventListener('customEvent',function(ev){
+     console.log("[3] on customEvent handle event=" + ev);
+}, false);
+
+//dispatchEvent() 方法给节点分派一个合成事件
+testDiv.dispatchEvent(evt);
+
+</script>
+</body>
+</html>

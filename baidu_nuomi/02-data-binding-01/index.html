@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Vue 源码学习</title>
+	<title>Vue 源码学习 （一）</title>
 
-	<script src="./vue-myj-v.0.0.js"></script>
+	<script src="./vue-myj-v.0.1.js"></script>
 	<script>
 
 /**
@@ -34,15 +34,19 @@ app2.data.university.name
 // 你访问了 university
 // 你访问了 name
 
-
-
-
-
-
-	</script>
+app2.data.fucking
+app2.data.fucking = 10
+</script>
 </head>
 <body>
-
-
+<h2>Vue 源码学习 （一）</h2>
+<p>主要使用了:<br>
+Object.defineProperty(owner, key, {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;configurable&nbsp;:&nbsp;true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;enumerable&nbsp;:&nbsp;true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get: function(){&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+&nbsp;&nbsp;&nbsp;&nbsp;set: function(value){&nbsp;&nbsp;&nbsp;&nbsp;} <br>
+} )</p>
+<p>用于重新设置setter getter</p>
 </body>
 </html>

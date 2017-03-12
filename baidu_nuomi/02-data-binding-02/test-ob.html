@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue 源码学习 （二）</title>
+	<script src="./js/vue-myj-v.0.2.js"></script>
+</head>
+<body>
+<h2>Test Observer</h2>
+<div id="test-custom-event" style="width:100px;height:62px;background-color:green;"></div>
+<hr>
+
+<script>
+let app1 = new Observer({
+	name: 'youngwind',
+	age: 25
+});
+app1.$watch("age", function(age) {
+	console.log(`reactive 年龄改变了，新值为${age}`);
+});
+
+
+//---- 开始测试 ----//
+
+app1.data.name = "hahahaha" 	// '你设置了属性 name，value=hahahaha'
+
+app1.data.name = {
+	lastName: 'liang',
+	firstName: 'shaofeng'
+};								// '你设置了属性 name，value=[object]''
+
+app1.data.name.lastName;		// '你访问了属性 name '
+								// '你访问了属性 lastName '
+
+app1.data.name.firstName = 'lalala';	// '你访问了属性 name '
+										// '你设置了firstName, value=lalala'
+
+//-- 测试$watch事件 --//
+app1.data.age = {				// '你设置了age, value=[object]'
+	yyy:1990,
+	mm:1,
+	dd:31
+}								// reactive 年龄改变了，新值为[object]
+
+
+</script>
+</body>
+</html>
