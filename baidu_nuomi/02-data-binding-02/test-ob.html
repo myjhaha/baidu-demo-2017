@@ -8,7 +8,27 @@
 <body>
 <h2>Test Observer</h2>
 <div id="test-custom-event" style="width:100px;height:62px;background-color:green;"></div>
+F12打开控制台
 <hr>
+<h2>实现的功能</h2>
+<ol>
+	<li>
+		<p>如果传入参数对象是一个“比较深”的对象（也就是其属性值也可能是对象），能识别出来，并为每层都添加setter/getter</p>
+	</li>
+	<li>
+		<p>如果设置新的值是一个对象的话，新设置的对象的属性能继续响应 getter 和 setter。</p>
+	</li>
+	<li>
+		<p>添加了传递回调函数的功能</p>
+	</li>
+</ol>
+<hr>
+<h2>未实现的功能</h2>
+<ol>
+	<li><p>未能参数为数组的情况进行处理</p></li>
+	<li><p>当object的子节点改变时，父节点是不知道的，需要一个事件传递的机制，目前还没想好</p></li>
+</ol>
+
 
 <script>
 let app1 = new Observer({
