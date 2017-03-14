@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test Event</title>
+<style type="text/css">
+div {padding: 20px;border:1px solid #333;}
+</style>
+</head>
+<body>
+
+<div id="div-1">
+	<div id="div-2">
+		<div id="div-3">
+			
+		</div>
+	</div>
+</div>
+
+<script>
+var $ = function(eleId){
+  return document.querySelector(eleId);
+}
+function addEventHandler(element, ev, handler){
+  if(element.addEventListener){
+    element.addEventListener(ev,handler,false);
+  }else if(element.attachEvent){
+    element.attachEvent("on" + ev, handler);
+  }else{
+    element["on" + ev] = handler;
+  }
+}
+
+var div1 = $("#div-1");
+var div2 = $("#div-2");
+var div3 = $("#div-3");
+
+addEventHandler(div1, "click", function(ev){
+	console.log("div-1 click");
+})
+addEventHandler(div2, "click", function(ev){
+	console.log("div-2 click");
+})
+addEventHandler(div3, "click", function(ev){
+	console.log("div-3 click");
+})
+
+</script>
+</body>
+</html>

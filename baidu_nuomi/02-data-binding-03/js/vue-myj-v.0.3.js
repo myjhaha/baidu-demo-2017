@@ -30,7 +30,7 @@ function observe(data) {
 	return ob;
 }
 
-function defineReactive$$1 (obj, key, val) {
+function defineReactive$$1 (parentOb, obj, key, val) {
 	//console.log(key);
 	var property = Object.getOwnPropertyDescriptor(obj, key);
   	if (property && property.configurable === false) {
@@ -40,19 +40,21 @@ function defineReactive$$1 (obj, key, val) {
   	var getter = property && property.get;
   	var setter = property && property.set;
 	var childOb = observe(val);
+	if (childOb)
+		childOb.__key__ = key; 
 	Object.defineProperty(obj, key, {
 		enumerable: true,
     	configurable: true,
     	get: function reactiveGetter () {
       		var value = getter ? getter.call(obj) : val;
-      		console.log(`你访问了属性 ${key}`);
+      		console.log(`--你访问了属性 ${key}`);
       		return value;
     	},
     	set: function reactiveSetter (newVal) {
     		var oldVal = getter ? getter.call(obj) : val;
     		if (newVal === oldVal || (newVal !== newVal && oldVal !== oldVal)) {
     			// 防止下一个if 发生死循环
-    			console.log(`你设置了属性 ${key}，但什么也没发生`);
+    			console.log(`--你设置了属性 ${key}，但什么也没发生`);
         		return;
       		}
       		if (setter) {
@@ -60,9 +62,13 @@ function defineReactive$$1 (obj, key, val) {
       		} else {
         		val = newVal;
       		}
-      		console.log(`你设置了属性 ${key}，value=${newVal}`);
-      		
-      		childOb = observe(newVal);
+      		console.log(`--你设置了属性 ${key}，value=${newVal}`);
+      		let childOb = observe(newVal);
+      		if ( childOb ){
+      			childOb.__parentOb__ = parentOb;
+      			childOb.__key__ = key
+      		}	// newVal不是Object没返回的
+      			
       		// set时的this，指向这个key的obj
       		// console.log(this)
       		this.__ob__.pubsub.emit(key, newVal, oldVal);
@@ -74,15 +80,16 @@ function defineReactive$$1 (obj, key, val) {
 
 function Observer(data) {
 	this.data = data;
-	this.pubsub = new PubSub();
+	this.pubsub = new PubSub(this);
 	this.walk(data);
+	this.__parentOb__ = null;
 	def(data, '__ob__', this);
 }
 
 Observer.prototype.walk = function(obj){
 	var keys = Object.keys(obj);
   	for (var i = 0; i < keys.length; i++) {
-    	defineReactive$$1(obj, keys[i], obj[keys[i]]);
+    	defineReactive$$1(this, obj, keys[i], obj[keys[i]]);
   	}
 }
 
@@ -92,8 +99,9 @@ Observer.prototype.$watch = function(key, handler){
 
 
 /**** pub/sub模式 ****/
-function PubSub(){
+function PubSub(ob){
 	this.handlers = {};
+	this.__ob__ = ob;
 }
 
 PubSub.prototype = {
@@ -110,6 +118,7 @@ PubSub.prototype = {
 	},
 	// 触发事件(发布事件)
 	emit: function(eventType) {
+		//console.log(`触发订阅事件${eventType}`);
 		let self = this;
 		if( Object.getOwnPropertyDescriptor(self.handlers, eventType) ){
 			//console.log(eventType)
@@ -117,6 +126,11 @@ PubSub.prototype = {
 			for (var i = 0; i<self.handlers[eventType].length; i++) {
 				self.handlers[eventType][i].apply(self, handlerArgs);
 			}
+		}
+		//this.__ob__.pubsub.emit(key, newVal, oldVal);
+		if(this.__ob__.__parentOb__){
+			let pOb = this.__ob__.__parentOb__;
+			pOb.pubsub.emit(this.__ob__.__key__)
 		}
 		return self;
 	}
