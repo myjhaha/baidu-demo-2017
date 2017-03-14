@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Vue 源码学习 （二）</title>
-	<script src="./js/vue-myj-v.0.2.js"></script>
+	<script src="./js/vue-myj-v.0.3.js"></script>
 </head>
 <body>
 <h2>Test Observer</h2>
 <div id="test-custom-event" style="width:100px;height:62px;background-color:green;"></div>
 F12打开控制台
 <hr>
-<h2>实现的功能</h2>
+<h2>实现的功能（上一题）</h2>
 <ol>
 	<li>
 		<p>如果传入参数对象是一个“比较深”的对象（也就是其属性值也可能是对象），能识别出来，并为每层都添加setter/getter</p>
@@ -22,11 +22,20 @@ F12打开控制台
 		<p>添加了传递回调函数的功能</p>
 	</li>
 </ol>
+<h2>实现的功能（本题）</h2>
+<ol>
+	<li>
+		<p>当object的子节点改变时，能够传递给父节点，但实现的手段太低级了，具体是:
+			<br>(1)在当前层级的Observer引入两个属性：父层的Observer、当前层在父层对应的的key
+			<br>(2)每当某层的setter触发一个更新事件时，处理完后手工触发父层的更新事件(用到了(1)中的那个key了)，直到顶为止
+		</p>
+	</li>
+</ol>
 <hr>
 <h2>未实现的功能</h2>
 <ol>
 	<li><p>未能参数为数组的情况进行处理</p></li>
-	<li><p>当object的子节点改变时，父节点是不知道的，需要一个事件传递的机制，目前还没想好</p></li>
+	
 </ol>
 
 
@@ -36,14 +45,18 @@ let app1 = new Observer({
 	age: 25
 });
 app1.$watch("age", function(age) {
-	console.log(`[func 1]reactive 年龄改变了，新值为${age}`);
+	if (!!age)
+		console.log(`[func 1]reactive 年龄改变了，新值为${age}`);
+	else
+		console.log(`[func 1]reactive 年龄改变了，但不知改成什么了`);
 });
-app1.$watch("age", function(age) {
-	console.log(`[func 2]reactive 年龄改变了，新值为${age}`);
+app1.$watch("name", function(name) {
+	if (!!name)
+		console.log(`[func 2]reactive 名字改变了，新值为${name}`);
+	else
+		console.log(`[func 2]reactive 名字改变了，但不知改成什么了`);
 });
-app1.$watch("age", function(age) {
-	console.log(`[func 3]reactive 年龄改变了，新值为${age}`);
-});
+
 
 
 //---- 开始测试 ----//
@@ -68,6 +81,23 @@ app1.data.age = {				// '你设置了age, value=[object]'
 	dd:31
 }								// reactive 年龄改变了，新值为[object]
 
+
+//---- 变化通知父结点 ----//
+
+app1.data.age.dd = 1
+//要输出: 年龄改变了，但不知改成了什么
+
+app1.data.name.lastName = "ssss"
+//要输出: 名字改变了，但不知改成了什么
+
+app1.data.name.lastName = {
+	middleName: "x",
+	schoolName: "school"
+}
+//要输出: 名字改变了，但不知改成了什么
+
+app1.data.name.lastName.schoolName = "bbbschool"
+//要输出: 名字改变了，但不知改成了什么
 
 </script>
 </body>
